@@ -40,8 +40,27 @@
 .form-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 1rem;
+  align-items: center;
+  gap: 1.5rem; /* Increased gap for better spacing */
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #f9f9f9; /* Softer background color */
+  border-radius: 12px; /* Rounded corners for a modern look */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Softer shadow */
+  color: #333; /* Ensure text is visible */
+}
+
+.form-container h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #222; /* Darker text for better contrast */
+  margin-bottom: 1rem;
+}
+
+.form-container label {
+  font-weight: 500;
+  color: #555; /* Softer label color */
 }
 
 .form-field {
@@ -54,5 +73,35 @@ textarea {
 }
 
 button {
-  align-self: center;
+  align-self: stretch; /* Make the button stretch to full width */
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: #007bff; /* Bootstrap primary color */
+  border: none;
+  border-radius: 8px; /* Rounded button */
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+
+input,
+select,
+textarea {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 1rem;
+  width: 100%;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
 }

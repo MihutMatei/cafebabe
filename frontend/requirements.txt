@@ -1,0 +1,7 @@
+react
+react-dom
+react-bootstrap
+bootstrap
+leaflet
+react-leaflet
+axios
