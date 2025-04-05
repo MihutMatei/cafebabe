@@ -1,22 +1,21 @@
 #!/bin/bash
 
-echo "Setting up Python environment for Accessibility Reporting App..."
+echo "Setting up Python environment for backend..."
 
-# Create a Python virtual environment
+# Create a virtual environment
 python3 -m venv env
 
-# Activate virtual environment
+# Activate the virtual environment
 source env/bin/activate
 
-# Upgrade pip and setuptools
+# Upgrade pip, setuptools, and wheel
 pip install --upgrade pip setuptools wheel
 
-# Install dependencies
+# Install backend dependencies
 pip install -r requirements.txt
 
 if [ $? -eq 0 ]; then
-    echo "Installation complete! Virtual environment is ready."
-    echo "To activate your environment, run: source env/bin/activate"
+    echo "Backend environment setup complete! To activate, run: source env/bin/activate"
 else
     echo "Installation failed. Please check the errors above."
 fi
