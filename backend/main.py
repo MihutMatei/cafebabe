@@ -1,16 +1,37 @@
 # backend/main.py
 from fastapi import FastAPI, Form, UploadFile, File
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 import os
 
 app = FastAPI()
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Adjust this to restrict origins if needed
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Serve static files from the "uploads" directory
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # In-memory store for reports
 reports = []
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to the Accessibility Reporting API!"}
+    return {
+        "message": "Welcome to the Accessibility Reporting API!",
+        "endpoints": {
+            "submit_report": "/submit",
+            "get_reports": "/reports",
+            "uploaded_files": "/uploads/{filename}"
+        }
+    }
 
 @app.post("/submit")
 async def submit_report(
