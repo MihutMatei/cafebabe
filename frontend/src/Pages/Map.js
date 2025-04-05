@@ -4,6 +4,7 @@ import {
   TileLayer,
   Marker,
   Polyline,
+  Circle,
   useMapEvents,
   Popup,
 } from 'react-leaflet';
@@ -198,10 +199,11 @@ const MapPage = () => {
     try {
       // Using the walking profile for foot navigation (OSRM expects "walking" for foot navigation)
       const response = await fetch(
-        `https://router.project-osrm.org/route/v1/walking/` +
-          `${userLocation[1]},${userLocation[0]};` +
-          `${marker[1]},${marker[0]}?overview=full&geometries=geojson&steps=true`
+        `https://routing.openstreetmap.de/routed-foot/route/v1/foot/` +
+        `${userLocation[1]},${userLocation[0]};` + 
+        `${marker[1]},${marker[0]}?overview=full&geometries=geojson&steps=true`
       );
+      
 
       const data = await response.json();
 
@@ -270,19 +272,25 @@ const MapPage = () => {
 
         {showReports &&
           reports.map((report, index) => (
-            <Marker
-              key={index}
-              position={[report.latitude, report.longitude]}
-              icon={icons[report.category] || redIcon}
-            >
-              <Popup>
-                <strong>{report.name}</strong>
-                <br />
-                {report.category}
-                <br />
-                {report.description}
-              </Popup>
-            </Marker>
+            <React.Fragment key={index}>
+              <Marker
+                position={[report.latitude, report.longitude]}
+                icon={icons[report.category] || redIcon}
+              >
+                <Popup>
+                  <strong>{report.name}</strong>
+                  <br />
+                  {report.category}
+                  <br />
+                  {report.description}
+                </Popup>
+              </Marker>
+              <Circle
+                center={[report.latitude, report.longitude]}
+                radius={10} // 10 meters
+                pathOptions={{ color: 'red', fillColor: 'red', fillOpacity: 0.2 }}
+              />
+            </React.Fragment>
           ))}
 
         {route.length > 0 && (
