@@ -1,0 +1,52 @@
+# Root-level Git Ignore for accessibility-app
+
+# Python / FastAPI Backend
+/backend/env/
+/backend/venv/
+/backend/__pycache__/
+/backend/*.py[cod]
+/backend/*.pyo
+/backend/*.pyd
+
+# Distribution / packaging
+/backend/build/
+/backend/dist/
+/backend/*.egg-info/
+
+# Installer logs
+/backend/pip-log.txt
+/backend/pip-delete-this-directory.txt
+
+# Virtual environment directories
+.env
+.venv
+
+# Log files
+*.log
+*.sqlite3
+
+# Environment variables
+*.env
+
+# IDE and Editor directories
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Node.js / Frontend (Mobile & Web)
+**/node_modules/
+**/dist/
+**/build/
+
+# Expo files (React Native)
+frontend-mobile/.expo/
+frontend-mobile/.expo-shared/
+
+# Next.js build files (Web)
+frontend-web/.next/
+frontend-web/out/
+
