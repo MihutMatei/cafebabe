@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@mapbox/polyline": "^1.2.1",
+    "dotenv": "^16.4.7",
+    "httpx": "^3.0.1",
+    "mapbox": "^1.0.0-beta10",
+    "polyline": "^0.2.0"
+  }
+}

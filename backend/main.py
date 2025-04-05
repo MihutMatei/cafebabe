@@ -1,10 +1,11 @@
-from fastapi import FastAPI, Form, UploadFile, File
+from fastapi import FastAPI, Form, UploadFile, File, Request, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from typing import List, Optional
 import os
 import random
+import httpx
 
 app = FastAPI()
 
@@ -105,3 +106,28 @@ async def seed_reports():
                 "image_saved_to": [dummy_image_path],
             }
             reports.append(report)
+
+ORS_API_KEY = "5b3ce3597851110001cf6248946090ae950048999bef583e7ecfdee4"  # Load the API key from environment variables
+
+@app.post("/proxy/ors")
+async def proxy_openrouteservice(request: Request):
+    try:
+        body = await request.json()
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": ORS_API_KEY,
+        }
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                "https://api.openrouteservice.org/v2/directions/foot-walking/json",
+                json=body,
+                headers=headers,
+            )
+        response.raise_for_status()  # Raise an exception for HTTP errors
+        return JSONResponse(content=response.json(), status_code=response.status_code)
+    except httpx.HTTPStatusError as http_err:
+        print(f"HTTP error occurred: {http_err.response.text}")
+        raise HTTPException(status_code=http_err.response.status_code, detail=http_err.response.text)
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        raise HTTPException(status_code=500, detail="An unexpected error occurred.")
