@@ -70,7 +70,7 @@ const icons = {
   }),
   blocked_entrance: new L.Icon({
     iconUrl:
-      'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-purple.png',
+      'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png',
     shadowUrl:
       'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
     iconSize: [15, 25], // Smaller size

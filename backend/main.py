@@ -88,14 +88,14 @@ async def seed_reports():
             f.write(b"dummy image content")
     
     # Center point for Cismigiu Park, Bucharest
-    center_lat = 44.4355
-    center_lon = 26.0898
+    center_lat = 44.4395
+    center_lon = 26.0908
     categories = ['blocked_sidewalk', 'blocked_bike_lane', 'blocked_crosswalk', 'blocked_entrance']
     
     if not reports:
         for i in range(50):
-            lat_offset = random.uniform(-0.002, 0.002)
-            lon_offset = random.uniform(-0.002, 0.002)
+            lat_offset = random.uniform(-0.004, 0.004)
+            lon_offset = random.uniform(-0.004, 0.004)
             report = {
                 "name": f"Test Report {i+1}",
                 "category": random.choice(categories),
