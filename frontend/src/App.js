@@ -4,13 +4,18 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import MapPage from './Pages/Map';
 import HomePage from './Pages/Home';
+import './App.css';
 
 function App() {
   return (
     <Router>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+      {/* Updated Navbar (only change) */}
+      <nav className="navbar navbar-expand-lg navbar-dark shadow-sm" style={{
+        backgroundColor: '#1B5E20', // Dark green
+        backgroundImage: 'linear-gradient(to right, #1B5E20, #2E7D32)' // Green gradient
+      }}>
         <div className="container">
-          <Link className="navbar-brand" to="/">CityGuard</Link>
+          <Link className="navbar-brand fw-bold" to="/">CityGuard</Link>
           <div className="collapse navbar-collapse">
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
@@ -21,6 +26,7 @@ function App() {
         </div>
       </nav>
 
+      {/* Everything below remains EXACTLY the same */}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/map" element={<MapPage />} />
