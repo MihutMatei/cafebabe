@@ -1,3 +1,25 @@
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('./Fonts/OpenDyslexic-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('./Fonts/OpenDyslexic-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+}
+
+body {
+  font-family: 'OpenDyslexic', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'OpenDyslexic', sans-serif;
+  font-weight: bold;
+}
+
 .App {
   text-align: center;
 }
@@ -127,5 +149,3 @@ textarea:focus {
 .close-button:hover {
   background-color: #007bff; /* Keep the same color on hover */
 }
-
-
