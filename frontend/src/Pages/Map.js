@@ -148,6 +148,7 @@ const MapControls = ({ onReportClick, toggleReports, onSearch, onNavigateClick }
 
 // Main Map Page
 const MapPage = () => {
+  const [steps, setSteps] = useState([]);
   const [marker, setMarker] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
   const [route, setRoute] = useState([]); // State to store navigation route
@@ -210,7 +211,14 @@ const MapPage = () => {
       if (data.routes?.[0]) {
         // Convert coordinates to [lat, lng] format
         const routeCoords = data.routes[0].geometry.coordinates.map(coord => [coord[1], coord[0]]);
+        const stepsList = data.routes[0].legs[0].steps.map((step, index) => ({
+          instruction: step.maneuver.instruction || step.name || `Step ${index + 1}`,
+          distance: step.distance,
+          duration: step.duration,
+        }));
+        
         setRoute(routeCoords);
+        setSteps(stepsList);
         setError(null);
       }
     } catch (err) {
@@ -309,6 +317,25 @@ const MapPage = () => {
         onSearch={handleSearch}
         onNavigateClick={handleNavigateClick}
       />
+
+      {steps.length > 0 && (
+        <div
+          className="position-absolute top-0 start-0 m-3 bg-white shadow p-3 rounded"
+          style={{ zIndex: 999, maxHeight: '90vh', overflowY: 'auto', width: '300px' }}
+        >
+          <h5>Directions</h5>
+          <ol className="ps-3">
+            {steps.map((step, idx) => (
+              <li key={idx} className="mb-2">
+                <div>{step.instruction}</div>
+                <small className="text-muted">
+                  {Math.round(step.distance)} m, {Math.round(step.duration)} sec
+                </small>
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
 
       {error && (
         <Alert variant="danger" className="position-absolute top-0 start-0 m-3">
