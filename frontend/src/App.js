@@ -1,180 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Form, Button, Alert } from 'react-bootstrap';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import MapPage from './Pages/Map';
+import HomePage from './Pages/Home';
 
 function App() {
-  const [formData, setFormData] = useState({
-    name: '',
-    category: '',
-    description: '',
-    latitude: '',
-    longitude: '',
-    image: [],
-  });
-  const [reports, setReports] = useState([]);
-  const [geoError, setGeoError] = useState('');
-  const [geoLocation, setGeoLocation] = useState({
-    latitude: '',
-    longitude: '',
-  });
-
-  // Fetch reports from the backend on mount
-  useEffect(() => {
-    fetchReports();
-  }, []);
-
-  // Use the browser's Geolocation API to get the current location
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setGeoLocation({
-            latitude: position.coords.latitude.toString(),
-            longitude: position.coords.longitude.toString(),
-          });
-        },
-        () => {
-          setGeoError('Unable to retrieve your location. Please check your permissions.');
-        }
-      );
-    } else {
-      setGeoError('Geolocation is not supported by this browser.');
-    }
-  }, []);
-
-  // Sync geolocation data with formData
-  useEffect(() => {
-    setFormData((prev) => ({
-      ...prev,
-      latitude: geoLocation.latitude,
-      longitude: geoLocation.longitude,
-    }));
-  }, [geoLocation]);
-
-  const fetchReports = async () => {
-    try {
-      const response = await fetch('http://localhost:8000/reports');
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      setReports(data.reports || []);
-    } catch (error) {
-      alert('Failed to fetch reports. Please try again later.');
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const data = new FormData();
-
-    const submissionData = {
-      ...formData,
-      latitude: geoLocation.latitude,
-      longitude: geoLocation.longitude,
-    };
-
-    Object.keys(submissionData).forEach((key) => {
-      if (key === 'image') {
-        submissionData.image.forEach((file) => {
-          data.append('image', file);
-        });
-      } else {
-        data.append(key, submissionData[key]);
-      }
-    });
-
-    try {
-      await axios.post('http://localhost:8000/submit', data, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      await fetchReports();
-      alert('Report submitted successfully!');
-    } catch (error) {
-      alert('Failed to submit report. Please try again later.');
-    }
-  };
-
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === 'image') {
-      setFormData((prev) => ({
-        ...prev,
-        image: files ? Array.from(files) : [],
-      }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
-  };
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <div className="form-container">
-          <Form onSubmit={handleSubmit}>
-            <h2>Submit Report</h2>
-            {geoError && <Alert variant="danger">{geoError}</Alert>}
-            <Form.Group className="mb-3">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="text"
-                name="name"
-                placeholder="Enter your name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Category</Form.Label>
-              <Form.Select
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Select obstruction type</option>
-                <option value="blocked_sidewalk">Blocked Sidewalk</option>
-                <option value="blocked_bike_lane">Blocked Bike Lane</option>
-                <option value="blocked_crosswalk">Blocked Crosswalk</option>
-                <option value="blocked_entrance">Blocked Entrance</option>
-              </Form.Select>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                as="textarea"
-                name="description"
-                placeholder="Enter a description"
-                value={formData.description}
-                onChange={handleChange}
-                rows={3}
-                required
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Images</Form.Label>
-              <Form.Control
-                type="file"
-                name="image"
-                onChange={handleChange}
-                accept="image/*"
-                multiple
-                required
-              />
-            </Form.Group>
-            <Button variant="primary" type="submit">
-              Submit Report
-            </Button>
-          </Form>
+    <Router>
+      <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+        <div className="container">
+          <Link className="navbar-brand" to="/">CityGuard</Link>
+          <div className="collapse navbar-collapse">
+            <ul className="navbar-nav ms-auto">
+              <li className="nav-item">
+                <Link className="nav-link" to="/map">Map</Link>
+              </li>
+            </ul>
+          </div>
         </div>
-      </header>
-    </div>
+      </nav>
+
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/map" element={<MapPage />} />
+      </Routes>
+    </Router>
   );
 }
 
